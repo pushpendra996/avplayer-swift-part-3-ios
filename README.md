@@ -1,6 +1,6 @@
 # AVPlayer: Play, Pause, Seek, and Time Control in iOS with Swift
 
-[![Custom AV Player](https://github.com/pushpendra996/avplayer-swift-part-1-ios/blob/main/Custom%20AV%20Player%20in%20Swift%20iOS.png?raw=true)](https://youtu.be/naMfH2nryvQ)
+[![Custom AV Player](https://github.com/pushpendra996/avplayer-swift-part-3-ios/blob/main/AVPlayer%20Tutorial.png?raw=true)](https://www.youtube.com/watch?v=naMfH2nryvQ&list=PL2Sk-NhO3icHtmBTtg70eeOUug4CEzaSm)
 
 
 AVPlayer is a powerful framework in iOS that allows developers to handle video playback with ease. In this GitHub repository, we provide a comprehensive guide and code examples for implementing essential control functionalities for AVPlayer, including play, pause, seek, and time control. By following the instructions and code snippets provided here, you can create a robust and interactive video player in your iOS app.
