@@ -40,6 +40,12 @@ class ViewController: UIViewController {
             self.seekSlider.addTarget(self, action: #selector(onTapToSlide), for: .valueChanged)
         }
     }
+    @IBOutlet weak var imgFullScreenToggle: UIImageView! {
+        didSet {
+            self.imgFullScreenToggle.isUserInteractionEnabled = true
+            self.imgFullScreenToggle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapToggleScreen)))
+        }
+    }
     
     
     let videoURL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
@@ -79,18 +85,17 @@ class ViewController: UIViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         guard let windowInterface = self.windowInterface else { return }
-        if #available(iOS 16.0, *) {
-            if windowInterface.isPortrait ==  true {
-                self.videoPlayerHeight.constant = 300
-            } else {
-                self.videoPlayerHeight.constant = self.view.layer.bounds.width
-            }
-            print(self.videoPlayerHeight.constant)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                self.playerLayer?.frame = self.videoPlayer.bounds
-            })
+        if windowInterface.isPortrait ==  true {
+            self.videoPlayerHeight.constant = 300
+        } else {
+            self.videoPlayerHeight.constant = self.view.layer.bounds.width
         }
+        print(self.videoPlayerHeight.constant)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            self.playerLayer?.frame = self.videoPlayer.bounds
+        })
     }
+    
     
     private var timeObserver : Any? = nil
     private func setObserverToPlayer() {
@@ -138,6 +143,7 @@ class ViewController: UIViewController {
         self.lbTotalTime.text = "\(hoursStr):\(minsStr):\(secsStr)"
     }
     
+    
     @objc private func onTap10SecNext() {
         guard let currentTime = self.player?.currentTime() else { return }
         let seekTime10Sec = CMTimeGetSeconds(currentTime).advanced(by: 10)
@@ -178,6 +184,29 @@ class ViewController: UIViewController {
                     self.isThumbSeek = false
                 }
             })
+        }
+    }
+    
+    @objc private func onTapToggleScreen() {
+        if #available(iOS 16.0, *) {
+            guard let windowSceen = self.view.window?.windowScene else { return }
+            if windowSceen.interfaceOrientation == .portrait {
+                windowSceen.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape)) { error in
+                    print(error.localizedDescription)
+                }
+            } else {
+                windowSceen.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait)) { error in
+                    print(error.localizedDescription)
+                }
+            }
+        } else {
+            if UIDevice.current.orientation == .portrait {
+                let orientation = UIInterfaceOrientation.landscapeRight.rawValue
+                UIDevice.current.setValue(orientation, forKey: "orientation")
+            } else {
+                let orientation = UIInterfaceOrientation.portrait.rawValue
+                UIDevice.current.setValue(orientation, forKey: "orientation")
+            }
         }
     }
 }
